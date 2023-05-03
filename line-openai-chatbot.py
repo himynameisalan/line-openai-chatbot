@@ -10,7 +10,7 @@ line_bot_api = LineBotApi(os.environ.get("LINE_CHANNEL_ACCESS_TOKEN"))
 handler = WebhookHandler(os.environ.get("LINE_CHANNEL_SECRET"))
 
 # OpenAI API
-# openai.api_key = os.environ.get("OPENAI_API_KEY")
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 
 app = Flask(__name__)
 
@@ -29,10 +29,9 @@ def webhook():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_text_message(event):
     user_message = event.message.text
-    # openai_response = get_openai_response(user_message)
+    openai_response = get_openai_response(user_message)
     line_bot_api.reply_message(
-        # event.reply_token, TextSendMessage(text=openai_response)
-        event.reply_token, TextSendMessage(text=user_message)
+        event.reply_token, TextSendMessage(text=openai_response)
     )
 
 def get_openai_response(prompt):
